@@ -15,7 +15,7 @@ client = TelegramClient(StringSession(os.environ["SESSION"]), api_id, api_hash)
 
 
 @bot.on(NewMessage(pattern="/medaljer"))
-async def start(event):
+async def medaljer(event):
     messages = []
     async with client:
         chat = await event.get_chat()

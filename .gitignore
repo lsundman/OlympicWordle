@@ -130,6 +130,7 @@ dmypy.json
 
 # Telethon session files
 *.session
+*.session-journal
 
 .DS_Store
 

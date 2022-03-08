@@ -3,14 +3,15 @@ import re
 
 regex = re.compile(r"Wordle (?P<wordle>\d{1,3}) (?P<guesses>[1-6])\/6")
 
-award_template = [0, 0, 0, 0]
+award_template = [0, 0, 0, 0, 0]
 award_chars = (
     "\N{GEM STONE}",
     "\N{FIRST PLACE MEDAL}",
     "\N{SECOND PLACE MEDAL}",
     "\N{THIRD PLACE MEDAL}",
+    "\N{ROCK}",
 )
-award_mapping = {1: 0, 2: 0, 3: 1, 4: 2, 5: 3}
+award_mapping = {1: 0, 2: 0, 3: 1, 4: 2, 5: 3, 6: 4}
 
 
 def parse_scores(messages):
@@ -23,28 +24,35 @@ def parse_scores(messages):
             user_wordles.setdefault(user, {})
             user_wordles[user][wordle] = award_mapping.get(guesses, None)
 
-    result = {}
+    result = []
     for user, ws in user_wordles.items():
         awards = award_template.copy()
         for _, idx in ws.items():
             if idx is not None:
                 awards[idx] += 1
 
-        result[user] = awards
+        result.append({"name": user, "wordles": list(ws.keys()), "awards": awards})
 
-    scores = dict(sorted(result.items(), key=lambda t: t[1], reverse=True))
-
+    scores = sorted(result, key=lambda res: res["awards"], reverse=True)
     return scores
 
 
 def award_ceremony(scores):
+    max_len = sorted(map(lambda s: len(s["name"]), scores)).pop()
+    max_wlen = sorted(map(lambda s: len(f"({len(s['wordles'])})"), scores)).pop()
+    awards_header = " ".join(award_chars)
     return "\n".join(
         (
-            "\t".join(("**Namn**", " ".join(award_chars))),
+            "\N{TROPHY}".ljust(max_len + max_wlen + 4) + awards_header,
             "\n".join(
                 [
-                    "\t".join((n, " ".join((f"{v}" for v in vals))))
-                    for n, vals in scores.items()
+                    "  ".join(
+                        (
+                            f"{s['name'].ljust(max_len)} ({len(s['wordles'])})",
+                            "    ".join(str(s) for s in s["awards"]),
+                        )
+                    )
+                    for s in scores
                 ]
             ),
         )
