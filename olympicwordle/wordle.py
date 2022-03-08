@@ -37,8 +37,9 @@ def parse_scores(messages):
 
 
 def award_ceremony(scores):
+    a_amount = lambda s: f"({sum(s['awards'])})"
     max_len = max(map(lambda s: len(s["name"]), scores))
-    max_wlen = max(map(lambda s: len(f"({sum(s['awards'])})"), scores))
+    max_wlen = max(map(lambda s: len(a_amount(s)), scores))
     max_alen = max(
         (
             *[max([len(str(a)) for a in s["awards"]]) for s in scores],
@@ -51,14 +52,14 @@ def award_ceremony(scores):
             " ".join(
                 (
                     "\N{TROPHY}".ljust(max_len + max_wlen),
-                    " ".join(s.ljust(max_alen - 1) for s in award_chars),
+                    " ".join(s.center(max_alen - 1) for s in award_chars),
                 )
             ),
             "\n".join(
                 [
                     "  ".join(
                         (
-                            f"{s['name'].ljust(max_len)} ({sum(s['awards'])})",
+                            f"{s['name'].ljust(max_len)} {a_amount(s).rjust(max_wlen)}",
                             " ".join(str(s).ljust(max_alen) for s in s["awards"]),
                         )
                     )

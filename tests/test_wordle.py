@@ -46,8 +46,16 @@ wordles = (
     ),
     (
         "total_medals",
-        [("A", f"Wordle {n} 4/6") for n in range(1, 15)],
-        {"A": [0, 0, 14, 0, 0]},
+        [
+            *(("A", f"Wordle {n} 4/6") for n in range(1, 120)),
+            *(("BB", f"Wordle {n} 3/6") for n in range(1, 8)),
+            *(("ABCDEFGHIJKL", f"Wordle {n} 5/6") for n in range(1, 4)),
+        ],
+        {
+            "A": [0, 0, 119, 0, 0],
+            "BB": [0, 7, 0, 0, 0],
+            "ABCDEFGHIJKL": [0, 0, 0, 3, 0],
+        },
     ),
 )
 
