@@ -68,3 +68,18 @@ def test_updates():
 def test_award_ceremony():
     scores = parse_scores(wordles["valid"])
     award_ceremony(scores)
+
+
+def test_emoji():
+    msg = """
+Wordle 262 3/6
+
+⬛️⬛️⬛️⬛️🟨
+⬛️⬛️⬛️🟨🟨
+🟩⬛️🟩⬛️⬛️
+🟩🟩🟩⬛️⬛️
+🟩🟩🟩⬛️🟨
+🟩🟩🟩🟩🟩
+"""
+    scores = parse_scores((("A", msg),))
+    assert scores["A"] == [0, 1, 0, 0]

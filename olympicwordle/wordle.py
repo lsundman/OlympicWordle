@@ -1,7 +1,7 @@
 from math import ceil
 import re
 
-regex = re.compile(r"Wordle (?P<wordle>[1-999]) (?P<guesses>[1-6])\/6")
+regex = re.compile(r"Wordle (?P<wordle>\d{1,3}) (?P<guesses>[1-6])\/6")
 
 award_template = [0, 0, 0, 0]
 award_chars = (
