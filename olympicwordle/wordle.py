@@ -1,4 +1,3 @@
-from math import ceil
 import re
 
 regex = re.compile(r"Wordle (?P<wordle>\d{1,3}) (?P<guesses>[1-6])\/6")
@@ -38,22 +37,34 @@ def parse_scores(messages):
 
 
 def award_ceremony(scores):
-    max_len = sorted(map(lambda s: len(s["name"]), scores)).pop()
-    max_wlen = sorted(map(lambda s: len(f"({len(s['wordles'])})"), scores)).pop()
-    awards_header = " ".join(award_chars)
+    max_len = max(map(lambda s: len(s["name"]), scores))
+    max_wlen = max(map(lambda s: len(f"({len(s['wordles'])})"), scores))
+    max_alen = max(
+        (
+            *[max([len(str(a)) for a in s["awards"]]) for s in scores],
+            max(len(c) for c in award_chars),
+        )
+    )
     return "\n".join(
         (
-            "\N{TROPHY}".ljust(max_len + max_wlen + 4) + awards_header,
+            "```",
+            " ".join(
+                (
+                    "\N{TROPHY}".ljust(max_len + max_wlen),
+                    " ".join(s.ljust(max_alen - 1) for s in award_chars),
+                )
+            ),
             "\n".join(
                 [
                     "  ".join(
                         (
-                            f"{s['name'].ljust(max_len)} ({len(s['wordles'])})",
-                            "    ".join(str(s) for s in s["awards"]),
+                            f"{s['name'].ljust(max_len)} ({sum(s['awards'])})",
+                            " ".join(str(s).ljust(max_alen) for s in s["awards"]),
                         )
                     )
                     for s in scores
                 ]
             ),
+            "```",
         )
     )

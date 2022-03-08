@@ -44,6 +44,11 @@ wordles = (
         ),
         {"A": [0, 0, 0, 1, 0]},
     ),
+    (
+        "total_medals",
+        [("A", f"Wordle {n} 4/6") for n in range(1, 15)],
+        {"A": [0, 0, 14, 0, 0]},
+    ),
 )
 
 
@@ -60,7 +65,7 @@ def test_order():
 
 
 def test_award_ceremony():
-    scores = parse_scores(wordles[0][1])
+    scores = parse_scores(wordles[4][1])
     award_string = award_ceremony(scores)
     assert isinstance(award_string, str)
     print(award_string)
