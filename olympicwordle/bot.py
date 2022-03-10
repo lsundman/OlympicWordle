@@ -5,6 +5,7 @@ from telethon.events import NewMessage, StopPropagation
 from telethon.sessions import StringSession
 
 from olympicwordle import wordle
+from olympicwordle.wordle_medals import award_ceremony
 
 api_id = os.environ["API_ID"]
 api_hash = os.environ["API_HASH"]
@@ -14,27 +15,24 @@ bot = TelegramClient("bot", api_id, api_hash).start(bot_token=bot_token)
 client = TelegramClient(StringSession(os.environ["SESSION"]), api_id, api_hash)
 
 
-@bot.on(NewMessage(pattern="/medaljer"))
-async def medaljer(event):
+async def get_messages(chat, regex):
     messages = []
     async with client:
-        chat = await event.get_chat()
         messages = [
             ((await m.get_sender()).first_name, m.text)
             async for m in client.iter_messages(chat, reverse=True)
+            if m.text and regex.search(m.text)
         ]
 
+    return messages
+
+
+@bot.on(NewMessage(pattern="/medaljer"))
+async def medaljer(event):
+    messages = await get_messages(await event.get_chat(), wordle.regex)
+
     if messages:
-        response = []
-        wordle_messages = [m for m in messages if m[1] and wordle.regex.search(m[1])]
-
-        if wordle_messages:
-            wordle_scores = wordle.parse_scores(wordle_messages)
-            wordle_response = wordle.award_ceremony(wordle_scores)
-            response.append(wordle_response)
-
-        if response:
-            await event.respond("\n".join(response))
+        await event.respond(f"```\n{award_ceremony(messages)}\n```")
 
     raise StopPropagation
 
