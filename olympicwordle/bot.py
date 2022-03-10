@@ -4,8 +4,7 @@ from telethon import TelegramClient
 from telethon.events import NewMessage, StopPropagation
 from telethon.sessions import StringSession
 
-from olympicwordle import wordle
-from olympicwordle.wordle_medals import award_ceremony
+from olympicwordle import wordle, wordle_medals
 
 api_id = os.environ["API_ID"]
 api_hash = os.environ["API_HASH"]
@@ -32,7 +31,7 @@ async def medaljer(event):
     messages = await get_messages(await event.get_chat(), wordle.regex)
 
     if messages:
-        await event.respond(f"```\n{award_ceremony(messages)}\n```")
+        await event.respond(f"```\n{wordle_medals.award_ceremony(messages)}\n```")
 
     raise StopPropagation
 
