@@ -31,25 +31,20 @@ def parse_scores(messages):
 def award_ceremony(messages):
     scores = parse_scores(messages)
 
-    m_amount = lambda s: f"({sum(s.medals)})"
-    max_name = max(map(lambda s: len(s.name), scores))
-    max_amount = max(map(lambda s: len(m_amount(s)), scores))
-    max_cell = max((max([len(str(m)) for m in s.medals]) for s in scores))
+    #m_amount = lambda s: f"({sum(s.medals)})"
+    #max_name = max(map(lambda s: len(s.name), scores))
+    #max_amount = max(map(lambda s: len(m_amount(s)), scores))
+    #max_cell = max((max([len(str(m)) for m in s.medals]) for s in scores))
 
-    return "\n".join(
+    medal_rows = [
         (
-            "\n──────────────────────\n".join(
-                [
-                    "\n".join(
-                        (
-                            f"{i}. {s.name} ({sum(s.medals)})",
-                            " ".join(
-                                f"{award_chars[i]} {n}" for i, n in enumerate(s.medals)
-                            ),
-                        )
-                    )
-                    for i, s in enumerate(scores, start=1)
-                ]
-            ),
+            f"{i}. {s.name} ({sum(s.medals)})",
+            " ".join(f"{award_chars[i]} {n}" for i, n in enumerate(s.medals)),
         )
-    )
+        for i, s in enumerate(scores, start=1)
+    ]
+
+    max_row = len(max(medal_rows,key=lambda r: r[1])[1])
+    padding = 8
+
+    return f"\n{'─'*(max_row+padding)}\n".join(["\n".join(row) for row in medal_rows])
