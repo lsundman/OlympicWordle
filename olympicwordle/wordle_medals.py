@@ -40,13 +40,12 @@ def award_ceremony(messages):
         (
             "\n".join(
                 [
-                    "\n".join(
+                    "\n──────────────────────\n".join(
                         (
                             f"{i}. {s.name} ({sum(s.medals)})",
                             " ".join(
                                 f"{award_chars[i]} {n}" for i, n in enumerate(s.medals)
                             ),
-                            "──────────────────────",
                         )
                     )
                     for i, s in enumerate(scores, start=1)
