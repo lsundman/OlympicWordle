@@ -45,6 +45,6 @@ def award_ceremony(messages):
     ]
 
     max_row = len(max(medal_rows,key=lambda r: r[1])[1])
-    padding = 8
+    padding = 4
 
     return f"\n{'─'*(max_row+padding)}\n".join(["\n".join(row) for row in medal_rows])
