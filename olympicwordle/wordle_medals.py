@@ -38,18 +38,17 @@ def award_ceremony(messages):
 
     return "\n".join(
         (
-            f"{''.join(c.ljust(max_cell) for c in award_chars)}",
             "\n".join(
                 [
                     "\n".join(
                         (
-                            f"{s.name.ljust(max_name)}",
+                            f"{i}. {s.name} ({sum(s.medals)})",
                             " ".join(
-                                str(s).ljust(max_cell) for s in (*s.medals, m_amount(s))
+                                f"{award_chars[i]} {n}" for i, n in enumerate(s.medals)
                             ),
                         )
                     )
-                    for s in scores
+                    for i, s in enumerate(scores, start=1)
                 ]
             ),
         )
