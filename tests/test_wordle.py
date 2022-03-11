@@ -1,4 +1,3 @@
-import random
 from olympicwordle.wordle import parse_messages
 
 

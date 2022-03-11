@@ -31,7 +31,7 @@ async def medaljer(event):
     messages = await get_messages(await event.get_chat(), wordle.regex)
 
     if messages:
-        await event.respond(f"```\n{wordle_medals.award_ceremony(messages)}\n```")
+        await event.respond(f"\n{wordle_medals.award_ceremony(messages)}\n")
 
     raise StopPropagation
 
