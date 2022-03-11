@@ -38,13 +38,13 @@ def award_ceremony(messages):
 
     return "\n".join(
         (
-            f"\N{TROPHY}: {' '.join(award_chars)}",
+            f"{''.join(c.ljust(3) for c in award_chars)}",
             "\n".join(
                 [
-                    " ".join(
+                    "\n".join(
                         (
                             f"{s.name.ljust(max_name)} {m_amount(s).rjust(max_amount)}",
-                            " ".join(str(s).ljust(max_cell) for s in s.medals),
+                            " ".join(str(s).ljust(3) for s in s.medals),
                         )
                     )
                     for s in scores
