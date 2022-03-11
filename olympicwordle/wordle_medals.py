@@ -46,6 +46,7 @@ def award_ceremony(messages):
                             " ".join(
                                 f"{award_chars[i]} {n}" for i, n in enumerate(s.medals)
                             ),
+                            "──────────────────────",
                         )
                     )
                     for i, s in enumerate(scores, start=1)
