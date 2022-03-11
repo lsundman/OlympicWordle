@@ -38,9 +38,9 @@ def award_ceremony(messages):
 
     return "\n".join(
         (
-            "\n".join(
+            "\n──────────────────────\n".join(
                 [
-                    "\n──────────────────────\n".join(
+                    "\n".join(
                         (
                             f"{i}. {s.name} ({sum(s.medals)})",
                             " ".join(
